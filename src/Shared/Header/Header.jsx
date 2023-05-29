@@ -11,7 +11,7 @@ const Header = () => {
   const bistroHeader = (
     <>
       <li>
-        <Link>home</Link>
+        <Link to="/">home</Link>
       </li>
       <li>
         <Link>contact us</Link>
@@ -20,16 +20,16 @@ const Header = () => {
         <Link>dashboard</Link>
       </li>
       <li>
-        <Link>our menu</Link>
+        <Link to="/menu">our menu</Link>
       </li>
       <li>
-        <Link>our shop</Link>
+        <Link to="/order">our shop</Link>
       </li>
       <li>
         <img className="w-20" src={shopIcon} alt="" />
       </li>
       <li>
-        <Link>sign out</Link>
+        <Link to="/signin">sign in</Link>
       </li>
     </>
   );

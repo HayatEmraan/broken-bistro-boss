@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CentreX from "../CentreX/CentreX";
+import CentreX from "../../../../Shared/CentreX/CentreX";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css";
@@ -11,9 +11,7 @@ import { FaQuoteLeft } from "react-icons/fa";
 const Testimonials = () => {
   const [reviewsData, setReviewsData] = useState(null);
   useEffect(() => {
-    fetch(
-      "https://raw.githubusercontent.com/ProgrammingHero1/bistro-boss-restaurant-resources/main/reviews.json"
-    )
+    fetch("http://localhost:3000/reviews")
       .then((res) => res.json())
       .then((data) => setReviewsData(data));
   }, []);

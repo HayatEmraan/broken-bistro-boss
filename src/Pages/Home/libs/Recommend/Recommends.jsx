@@ -9,7 +9,7 @@ const Recommends = () => {
               style={{ height: "300px" }}
               src={salad}
               alt="Shoes"
-              className="rounded-xl w-full"
+              className="w-full"
             />
           </figure>
           <div className="card-body items-center text-center py-3">

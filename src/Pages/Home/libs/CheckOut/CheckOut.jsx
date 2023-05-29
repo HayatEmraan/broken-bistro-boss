@@ -1,7 +1,7 @@
 import React from "react";
 import featured from "../../../../assets/home/featured.jpg";
 import "./CheckOut.css";
-import CentreX from "../CentreX/CentreX";
+import CentreX from "../../../../Shared/CentreX/CentreX";
 const CheckOut = () => {
   return (
     <div className="checkout py-12 mt-16">
