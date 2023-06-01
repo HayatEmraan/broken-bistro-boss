@@ -1,13 +1,35 @@
-import React from "react";
-import shopIcon from "../../assets/icon/151-1511569_cart-notifications-free-shopping-cart-favicon-hd-png-removebg-preview.png";
+import React, { useContext, useEffect, useState } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { layerContext } from "../../Context/AuthContext";
+import useQueryHook from "../../Hook/useQuery";
+import useAdmin from "../../Hook/useAdmin";
 const Header = () => {
+  const { user, logout } = useContext(layerContext);
   const bistroLogo = (
     <div className="font-cinzel font-extrabold font-3xl">
       <h2>BISTRO BOSS</h2>
       <h2 className="-mt-2">Restaurant</h2>
     </div>
   );
+  const userList = useAdmin();
+  // const [data, setData] = useState([]);
+  // if (user) {
+  //   const { data: data = [] } = useQueryHook();
+  //   // setData(data);
+  // }
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    if (user) {
+      const { data, isLoading } = useQueryHook();
+      setData(data);
+    }
+  }, []);
+  const handleLogout = () => {
+    logout()
+      .then(() => {})
+      .catch((err) => console.log(err));
+  };
   const bistroHeader = (
     <>
       <li>
@@ -17,20 +39,31 @@ const Header = () => {
         <Link>contact us</Link>
       </li>
       <li>
-        <Link>dashboard</Link>
+        <Link to="/dashboard">dashboard</Link>
       </li>
       <li>
         <Link to="/menu">our menu</Link>
       </li>
       <li>
-        <Link to="/order">our shop</Link>
+        <Link to="/order/salad">our shop</Link>
       </li>
       <li>
-        <img className="w-20" src={shopIcon} alt="" />
+        <Link to="/dashboard/cart" className=" text-2xl gap-0">
+          <AiOutlineShoppingCart></AiOutlineShoppingCart>
+          <small className="absolute top-0 right-1 text-white bg-red-800 rounded-full py-0 text-sm px-2">
+            {(data && data?.length) || 0}
+          </small>
+        </Link>
       </li>
-      <li>
-        <Link to="/signin">sign in</Link>
-      </li>
+      {user ? (
+        <li>
+          <button onClick={handleLogout}>LogOut</button>
+        </li>
+      ) : (
+        <li>
+          <Link to="/signin">sign in</Link>
+        </li>
+      )}
     </>
   );
   return (

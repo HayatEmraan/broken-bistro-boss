@@ -29,7 +29,6 @@ const Order = () => {
     setCurrentPage(page);
     setItemsPerPage(limit);
   };
-  console.log(menu);
 
   const filterItems = menuItems.indexOf(id);
   const drinkItems = menu && menu.filter((item) => item.category === "drinks");

@@ -11,6 +11,7 @@ import {
 } from "react-simple-captcha";
 import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
+import useSaveData from "../../Hook/useSaveData";
 const SignUp = () => {
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -29,14 +30,17 @@ const SignUp = () => {
         updateProfile(res.user, {
           displayName: e.name,
         });
-        console.log(res.user);
+        useSaveData(e.name, e.email);
       })
       .catch((err) => console.log(err));
   };
 
   const googleHandleer = () => {
     googleProvider()
-      .then((res) => console.log(res.user))
+      .then((res) => {
+        useSaveData(res.user.displayName, res.user.email);
+        console.log(res.user);
+      })
       .catch((err) => console.log(err));
   };
   const twitterHandler = () => {
@@ -79,16 +83,30 @@ const SignUp = () => {
             <input
               className="border bg-white text-black block w-full px-4 py-2 rounded-md "
               placeholder="Type here"
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: true,
+                pattern:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              })}
             />
+            {errors.email && (
+              <p className="text-warning">Enter valid email is required.</p>
+            )}
           </div>
           <div>
             <label htmlFor="">Password</label>
             <input
               className="border bg-white text-black block w-full px-4 py-2 rounded-md "
               placeholder="Enter your password"
-              {...register("password", { required: true })}
+              {...register("password", {
+                required: true,
+                minLength: 6,
+                maxLength: 18,
+              })}
             />
+            {errors.password && (
+              <p className="text-warning">Please enter 6 to 18 characters.</p>
+            )}
           </div>
           <LoadCanvasTemplate />
           <input
@@ -98,8 +116,6 @@ const SignUp = () => {
             name="captcha"
             required
           />
-          {errors.lastName && <p>Last name is required.</p>}
-          {errors.age && <p>Please enter number for age.</p>}
           <input
             className="btn border-0 w-full text-center text-white bg-[#d1a054]"
             type="submit"
@@ -109,8 +125,9 @@ const SignUp = () => {
         </form>
         <div>
           <p className="text-center my-4">
-            Already registered? <Link to="/signin" className="text-[#d1a054]">
-             Go to Sign In
+            Already registered?{" "}
+            <Link to="/signin" className="text-[#d1a054]">
+              Go to Sign In
             </Link>
           </p>
         </div>

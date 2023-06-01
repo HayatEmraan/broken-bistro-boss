@@ -8,7 +8,9 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
+import axios from "axios";
 
 export const layerContext = createContext(null);
 const AuthContext = ({ children }) => {
@@ -44,6 +46,18 @@ const AuthContext = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
+      if (user) {
+        axios
+          .post("http://localhost:3000/api/admin/cookies", {
+            email: user.email,
+          })
+          .then((res) => {
+            localStorage.setItem("token", res.data.token);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        localStorage.removeItem("token");
+      }
     });
     return unsubscribe;
   }, []);
